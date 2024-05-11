@@ -17,7 +17,8 @@ import java.util.concurrent.TimeUnit
 
 
 class GptInteraction(var project: Project) {
-    private val model = "gpt-3.5-turbo"
+    var model = ""
+
     private val separator = FileSystems.getDefault().separator
     //private val logFileDirectory = "${System.getProperty("user.home")}${separator}Documents${separator}Drop Project Plugin${separator}"
     private val logFileDirectory = project.let { FileEditorManager.getInstance(it).project.basePath.toString() }

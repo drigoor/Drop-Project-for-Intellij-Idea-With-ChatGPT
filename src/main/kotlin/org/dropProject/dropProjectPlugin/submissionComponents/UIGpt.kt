@@ -184,7 +184,10 @@ class UIGpt(var project: Project) {
 
         sendButton = JButton("Send Message")
         sendButton.addMouseListener(object : MouseAdapter() {
-            override fun mousePressed(e: MouseEvent?) = sendPrompt()
+            override fun mousePressed(e: MouseEvent?) {
+                gptInteraction.model = "gpt-3.5-turbo"
+                sendPrompt()
+            }
         })
 
         val usefulButtonConstraints = GridBagConstraints()
@@ -305,7 +308,8 @@ class UIGpt(var project: Project) {
         return input.replace("[\\\\$\"\\n\\r\\t\b\\u000c']".toRegex(), "")
     }
 
-    fun addToPrompt(text : String) {
+    fun addToPrompt(text: String, model: String = "gpt-3.5-turbo") {
+        gptInteraction.model = model
         textField.text += text
     }
 
