@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.dropProject.dropProjectPlugin.DefaultNotification
+import org.dropProject.dropProjectPlugin.plafond.Plafond
 import org.dropProject.dropProjectPlugin.settings.SettingsState
 import java.io.File
 import java.nio.file.FileSystems
@@ -57,6 +58,9 @@ class GptInteraction(var project: Project) {
     }
 
     private fun processPrompt(): String {
+        if (model != "gpt-4" && Plafond.isBellow70("https://raw.githubusercontent.com/drigoor/Drop-Project-for-Intellij-Idea-With-ChatGPT/master/plafond.json")) {
+                return "Error: Not enough plafond"
+        }
 
         val settingsState = SettingsState.getInstance()
         val apiKey = settingsState.openAiToken
