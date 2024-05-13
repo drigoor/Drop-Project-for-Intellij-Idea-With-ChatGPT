@@ -34,4 +34,8 @@ class LogMessage(
     fun markAs(useful: Boolean?) {
         this.useful = useful
     }
+
+    fun getContent(): String {
+        return content
+    }
 }

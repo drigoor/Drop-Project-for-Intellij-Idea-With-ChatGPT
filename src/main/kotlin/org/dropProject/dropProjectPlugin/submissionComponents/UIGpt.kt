@@ -15,10 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.dropProject.dropProjectPlugin.gpt.GptInteraction
 import org.dropProject.dropProjectPlugin.settings.SettingsState
-import java.awt.BorderLayout
-import java.awt.Dimension
-import java.awt.GridBagConstraints
-import java.awt.GridBagLayout
+import java.awt.*
+import java.awt.datatransfer.StringSelection
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.*
@@ -133,6 +131,7 @@ class UIGpt(var project: Project) {
     private var chatHtml = ChatHtmlBuilder()
     private var usefulButton = JButton("Useful")
     private var notUsefulButton = JButton("Not Useful")
+    private var copyCodeButton = JButton("Copy Code")
     private var askTwice = false
 
     init {
@@ -181,6 +180,16 @@ class UIGpt(var project: Project) {
             gptInteraction.markLastResponseAs(false)
         }
 
+        copyCodeButton.addActionListener {
+            val codeBlock = gptInteraction.getLastBlockOfCode()
+            if (codeBlock != null) {
+                val stringSelection = StringSelection(codeBlock)
+                val clipboard = Toolkit.getDefaultToolkit().systemClipboard
+                clipboard.setContents(stringSelection, null)
+            }
+        }
+
+
 
         sendButton = JButton("Send Message")
         sendButton.addMouseListener(object : MouseAdapter() {
@@ -190,71 +199,79 @@ class UIGpt(var project: Project) {
             }
         })
 
-        val usefulButtonConstraints = GridBagConstraints()
-        usefulButtonConstraints.fill = GridBagConstraints.HORIZONTAL
-        usefulButtonConstraints.weightx = 0.5
-        usefulButtonConstraints.insets = JBUI.insets(3) // Custom padding
-        usefulButtonConstraints.gridx = 0 // Place at column 0
-        usefulButtonConstraints.gridy = 0 // Place in the first row
+        inputAndSubmitPanel = JPanel(GridBagLayout())
 
-        val notUsefulButtonConstraints = GridBagConstraints()
-        notUsefulButtonConstraints.fill = GridBagConstraints.HORIZONTAL
-        notUsefulButtonConstraints.weightx = 0.5
-        notUsefulButtonConstraints.insets = JBUI.insets(3) // Custom padding
-        notUsefulButtonConstraints.gridx = 1 // Place at column 1
-        notUsefulButtonConstraints.gridy = 0 // Place in the first row
-
-        val textFieldConstraints = GridBagConstraints()
-        textFieldConstraints.fill = GridBagConstraints.HORIZONTAL
-        textFieldConstraints.weightx = 1.0
-        textFieldConstraints.gridwidth = 3 // Span three columns
-        textFieldConstraints.insets = JBUI.insets(3) // Custom padding
-        textFieldConstraints.gridx = 0 // Place at column 0
-        textFieldConstraints.gridy = 1 // Place in the second row
-
-        val phraseComboBoxConstraints = GridBagConstraints()
-        phraseComboBoxConstraints.fill = GridBagConstraints.HORIZONTAL
-        phraseComboBoxConstraints.weightx = 0.5
-        phraseComboBoxConstraints.insets = JBUI.insets(3) // Custom padding
-        phraseComboBoxConstraints.gridx = 0 // Place at column 0
-        phraseComboBoxConstraints.gridy = 2 // Place in the third row
-
-        val checkBoxConstraints = GridBagConstraints()
-        checkBoxConstraints.fill = GridBagConstraints.HORIZONTAL
-        checkBoxConstraints.weightx = 0.1 // Increased weightx value
-        checkBoxConstraints.insets = JBUI.insets(3, 30, 3, 3) // Add more padding to the right
-        checkBoxConstraints.gridx = 1 // Place at column 1
-        checkBoxConstraints.gridy = 2 // Place in the third row
-
-        val sendButtonConstraints = GridBagConstraints()
-        sendButtonConstraints.fill = GridBagConstraints.HORIZONTAL
-        sendButtonConstraints.weightx = 1.0
-        sendButtonConstraints.gridwidth = 3 // Span three columns
-        sendButtonConstraints.insets = JBUI.insets(3) // Custom padding
-        sendButtonConstraints.gridx = 0 // Place at column 0
-        sendButtonConstraints.gridy = 3 // Place in the fourth row
 
         val askTwiceCheckBox = JCheckBox("Ask for 2 solutions")
 
 
+        val gbc = GridBagConstraints()
+        gbc.weightx = 0.0
+        gbc.weighty = 0.0
+        gbc.insets = JBUI.insets(3)
 
-        askTwiceCheckBox.addActionListener { _ ->
+        gbc.gridx = 0
+        gbc.gridy = 0
+        gbc.gridwidth = 2
+        gbc.weightx = 1.0
+        gbc.fill = GridBagConstraints.BOTH
+        inputAndSubmitPanel.add(copyCodeButton, gbc)
+
+        gbc.gridx = 0
+        gbc.gridy = 1
+        gbc.gridwidth = 1
+        gbc.weightx = 0.5
+        gbc.fill = GridBagConstraints.BOTH
+        inputAndSubmitPanel.add(usefulButton, gbc)
+
+        gbc.gridx = 1
+        gbc.gridy = 1
+        gbc.gridwidth = 1
+        gbc.weightx = 0.5
+        gbc.fill = GridBagConstraints.BOTH
+        inputAndSubmitPanel.add(notUsefulButton, gbc)
+
+        gbc.gridx = 0
+        gbc.gridy = 2
+        gbc.gridwidth = 2
+        gbc.weightx = 1.0
+        gbc.fill = GridBagConstraints.BOTH
+        inputAndSubmitPanel.add(textField, gbc)
+
+        gbc.gridx = 0
+        gbc.gridy = 3
+        gbc.gridwidth = 1
+        gbc.weightx = 0.5
+        gbc.fill = GridBagConstraints.BOTH
+        inputAndSubmitPanel.add(phraseComboBox, gbc)
+
+        gbc.gridx = 1
+        gbc.gridy = 3
+        gbc.gridwidth = 1
+        gbc.weightx = 0.5
+        gbc.fill = GridBagConstraints.BOTH
+        inputAndSubmitPanel.add(askTwiceCheckBox, gbc)
+
+        gbc.gridx = 0
+        gbc.gridy = 4
+        gbc.gridwidth = 2
+        gbc.weightx = 1.0
+        gbc.fill = GridBagConstraints.BOTH
+        inputAndSubmitPanel.add(sendButton, gbc)
+
+
+
+
+        askTwiceCheckBox.addActionListener {
             askTwice = askTwiceCheckBox.isSelected
         }
 
-        inputAndSubmitPanel = JPanel(GridBagLayout())
-        inputAndSubmitPanel.add(usefulButton, usefulButtonConstraints)
-        inputAndSubmitPanel.add(notUsefulButton, notUsefulButtonConstraints)
-        inputAndSubmitPanel.add(textField, textFieldConstraints)
-        inputAndSubmitPanel.add(phraseComboBox, phraseComboBoxConstraints)
-        inputAndSubmitPanel.add(askTwiceCheckBox, checkBoxConstraints) // Add checkbox in the second column
-        inputAndSubmitPanel.add(sendButton, sendButtonConstraints) // Add send button in the third column
 
 
-        inputAndSubmitPanel.preferredSize = Dimension(600, 140) // Increased height to accommodate the taller button
-
+        inputAndSubmitPanel.preferredSize = Dimension(600, 180) // Increased height to accommodate the taller button
 
         responseArea.size = Dimension(200, -1)
+
 
         val panel = JPanel()
         panel.layout = BorderLayout()

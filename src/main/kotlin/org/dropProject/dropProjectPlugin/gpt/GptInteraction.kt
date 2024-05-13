@@ -230,6 +230,32 @@ class GptInteraction(var project: Project) {
         return log
     }
 
+    fun getLastBlockOfCode(): String? {
+        val codeBlockDelimiter = "```"
+
+        if (!chatToSave.last().isFromGPT()) {
+            return null
+        }
+
+        try {
+            var messageContent = chatToSave.last().getContent()
+
+            var startIndex = messageContent.indexOf(codeBlockDelimiter)
+            messageContent = messageContent.substring(startIndex, messageContent.length)
+
+            startIndex = messageContent.indexOf("\n")
+            messageContent = messageContent.substring(startIndex, messageContent.length)
+
+            val endIndex = messageContent.lastIndexOf(codeBlockDelimiter)
+
+            return messageContent.substring(0, endIndex)
+
+        } catch (e: Exception) {
+            println("IDK some error")
+            return null
+        }
+    }
+
     fun markLastResponseAs(useful: Boolean) {
         for (message in chatToSave.reversed()) {
             if (!message.isFromGPT()) {
