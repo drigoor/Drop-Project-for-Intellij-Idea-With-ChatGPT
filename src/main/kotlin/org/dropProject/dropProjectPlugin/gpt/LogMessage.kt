@@ -1,5 +1,7 @@
 package org.dropProject.dropProjectPlugin.gpt
 
+import com.google.gson.Gson
+
 class LogMessage(
     private val author: String,
     private val content: String,
@@ -38,4 +40,9 @@ class LogMessage(
     fun getContent(): String {
         return content
     }
+
+    fun writeToJSON(): String {
+        return Gson().toJson(this)
+    }
+
 }

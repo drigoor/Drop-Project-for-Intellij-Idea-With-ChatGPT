@@ -25,7 +25,10 @@ class GptInteraction(var project: Project) {
     private val logFileDirectory = project.let { FileEditorManager.getInstance(it).project.basePath.toString() }
     private val dateTime = Date()
     private val formatter = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
+
     private val logFile = File("${logFileDirectory}${separator}chat_logs${separator}chat_log_${formatter.format(dateTime)}.txt")
+    private val logFileJSON = File("${logFileDirectory}${separator}chat_logs${separator}chat_log_${formatter.format(dateTime)}.json")
+
     private var responseLog = ArrayList<GPTResponse>()
     private var chatLog = ArrayList<Message>()
     private var chatToSave = ArrayList<LogMessage>()
@@ -34,12 +37,17 @@ class GptInteraction(var project: Project) {
     )
 
     init {
-        val logFileParent = logFile.parentFile
-        if (!logFileParent.exists()) {
-            logFileParent.mkdirs() // Creating the parent directories if they don't exist
+        prepareLogFile(logFile)
+        prepareLogFile(logFileJSON)
+    }
+
+    fun prepareLogFile(file: File) {
+        val fileParent = file.parentFile
+        if (!fileParent.exists()) {
+            fileParent.mkdirs() // Creating the parent directories if they don't exist
         }
-        if (!logFile.exists()) {
-            logFile.createNewFile() // Creating the target file if it doesn't exist
+        if (!file.exists()) {
+            file.createNewFile() // Creating the target file if it doesn't exist
         }
     }
 
@@ -191,10 +199,14 @@ class GptInteraction(var project: Project) {
     private fun updateLogFile() {
         logFile.delete()
         logFile.createNewFile()
+
+        logFileJSON.delete()
+        logFileJSON.createNewFile()
+
         for (message in chatToSave) {
             logFile.appendText(message.toString() + "\n")
-
             println("ALL YOUR JSON: " + message.writeToJSON())
+            logFileJSON.appendText(message.writeToJSON())
         }
     }
 
