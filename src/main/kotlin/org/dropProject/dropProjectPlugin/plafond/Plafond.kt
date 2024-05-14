@@ -25,9 +25,7 @@ object Plafond {
             val plafondData = plafondDataJsonAdapter.fromJson(body ?: "")
             val value = plafondData?.availableTokens ?: 0
 
-            //return value < 70
-
-            return true
+            return value < 70
         }
     }
 }

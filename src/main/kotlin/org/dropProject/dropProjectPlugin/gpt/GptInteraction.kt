@@ -57,8 +57,12 @@ class GptInteraction(var project: Project) {
         return responseLog.last().choices.first().message.content
     }
 
+    fun hasEnoughPlafond(): Boolean {
+        return !Plafond.isBellow70("https://raw.githubusercontent.com/drigoor/Drop-Project-for-Intellij-Idea-With-ChatGPT/master/plafond.json")
+    }
+
     private fun processPrompt(): String {
-        if (model != "gpt-4" && Plafond.isBellow70("https://raw.githubusercontent.com/drigoor/Drop-Project-for-Intellij-Idea-With-ChatGPT/master/plafond.json")) {
+        if (model != "gpt-4" && !hasEnoughPlafond()) {
                 return "Error: Not enough plafond"
         }
 
@@ -189,6 +193,8 @@ class GptInteraction(var project: Project) {
         logFile.createNewFile()
         for (message in chatToSave) {
             logFile.appendText(message.toString() + "\n")
+
+            println("ALL YOUR JSON: " + message.writeToJSON())
         }
     }
 
