@@ -1,4 +1,4 @@
-package org.dropProject.dropProjectPlugin.submissionComponents
+package org.dropProject.dropProjectPlugin.gpt
 
 import com.intellij.ui.JBColor
 import com.intellij.util.ui.StyleSheetUtil
@@ -49,6 +49,7 @@ class ChatHtmlBuilder {
 
     private var content = StringBuilder("<table>")
     fun getHtmlChat(): String {
+        println("$content</table>\n")
         return "$content</table>\n"
     }
     fun append(user: String, message: String, isUser: Boolean) {
@@ -88,6 +89,11 @@ class ChatHtmlBuilder {
     p {
         word-wrap: break-word;
     }
+    
+    code {
+        color: ${getCodeColor()};
+    }
+    
     td, th {
         padding: 8px; /* Add padding for better readability */
         word-wrap: break-word; /* Wrap long words */
@@ -110,6 +116,12 @@ class ChatHtmlBuilder {
     }
     """.trimIndent())
 
+    private fun getCodeColor(): String {
+        if (isCurrentThemeDark()) {
+            return "rgb(200, 200, 255)"
+        }
+        return "rgb(138, 43, 226)"
+    }
 
     private fun getUserColor(): String {
         if (isCurrentThemeDark()) {

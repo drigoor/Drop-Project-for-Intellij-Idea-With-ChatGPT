@@ -1,7 +1,7 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
-    <id>org.dropProject.Drop-Project-for-Intellij-Idea</id>
+    <id>org.dropProject.Drop-Project-for-Intellij-Idea-With-ChatGPT</id>
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
@@ -61,12 +61,12 @@
     </extensions>
     <actions>
         <action id="org.dropProject.dropProjectPlugin.gpt.SendToGptEditor"
-                class="org.dropProject.dropProjectPlugin.gpt.SendToGptEditor" text="Send to GPT"
+                class="org.dropProject.dropProjectPlugin.gpt.SendToGptEditor" text="Send to ChatGPT"
                 description="Sends the selected text to the ChatGPT prompt input box">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
         <action id="org.dropProject.dropProjectPlugin.gpt.SendToGptConsole"
-                class="org.dropProject.dropProjectPlugin.gpt.SendToGptConsole" text="Send to GPT"
+                class="org.dropProject.dropProjectPlugin.gpt.SendToGptConsole" text="Send to ChatGPT"
                 description="Sends the selected text to the ChatGPT prompt input box">
             <add-to-group group-id="ConsoleEditorPopupMenu" anchor="last"/>
         </action>

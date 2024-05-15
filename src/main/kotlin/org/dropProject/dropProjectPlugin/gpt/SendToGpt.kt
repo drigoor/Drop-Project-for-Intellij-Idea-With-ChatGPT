@@ -36,7 +36,7 @@ class SendToGptEditor : AnAction() {
             //println(uiGPT.textField)
             //println(uiGPT.textField.text)
         } else {
-            Messages.showInfoMessage("No text selected", "Send to GPT")
+            Messages.showInfoMessage("No text selected", "Send to ChatGPT")
         }
     }
 }
@@ -60,7 +60,7 @@ class SendToGptConsole : AnAction() {
             }
 
         } else {
-            Messages.showInfoMessage("No text selected", "Send to GPT")
+            Messages.showInfoMessage("No text selected", "Send to ChatGPT")
         }
     }
 
