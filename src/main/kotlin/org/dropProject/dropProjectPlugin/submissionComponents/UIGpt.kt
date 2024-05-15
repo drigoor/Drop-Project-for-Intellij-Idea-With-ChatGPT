@@ -378,6 +378,8 @@ class UIGpt(var project: Project) {
 
             }
         }
+
+        gptInteraction.fromDPReport = false
     }
 
     private fun openDiffViewer(response1: String, response2: String) {
