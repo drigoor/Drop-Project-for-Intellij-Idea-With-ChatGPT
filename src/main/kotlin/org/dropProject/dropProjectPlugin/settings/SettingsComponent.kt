@@ -103,7 +103,7 @@ class SettingsComponent {
         panel.add(
             FormBuilder.createFormBuilder()
                 .addLabeledComponent(JBLabel("OpenAI API Key: "), openAiTokenPanel, 1, false)
-                .addLabeledComponent(JBLabel("Ask ChatGPT: "), autoSendPrompt, 1, false)
+                .addLabeledComponent(JBLabel("Send to ChatGPT: "), autoSendPrompt, 1, false)
                 .addComponent(createOpenAiAccountButton)
                 .panel.apply {
                     border = BorderFactory.createEmptyBorder(0, 20, 0, 0) // Add left indentation

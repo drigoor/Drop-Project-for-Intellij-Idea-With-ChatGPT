@@ -1,9 +1,5 @@
 package org.dropProject.dropProjectPlugin.submissionComponents
 
-import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.openapi.editor.CaretModel
-import com.intellij.openapi.ui.Messages
-import com.intellij.ui.components.JBLabel
 import com.intellij.openapi.project.Project
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.dsl.builder.RowLayout
@@ -81,13 +77,7 @@ internal class UIBuildReport(private val project: Project) {
                             row {
                                 text(error)
                                 button("Send to ChatGPT") {
-                                    val uiGPT = UIGpt.getInstance(project)
-                                    uiGPT.addToPrompt(error)
-
-                                    val settingsState = SettingsState.getInstance()
-                                    if (settingsState.autoSendPrompt) {
-                                        uiGPT.sendPrompt()
-                                    }
+                                    sendToChatGPTAction(error)
                                 }
                             }
                         }
@@ -106,6 +96,9 @@ internal class UIBuildReport(private val project: Project) {
                             group {
                                 row {
                                     text(error)
+                                    button("Send to ChatGPT") {
+                                        sendToChatGPTAction(error)
+                                    }
                                 }
                             }
                         }
@@ -119,6 +112,9 @@ internal class UIBuildReport(private val project: Project) {
                         group {
                             row {
                                 text(error)
+                                button("Send to ChatGPT") {
+                                    sendToChatGPTAction(error)
+                                }
                             }
                         }
                     }
@@ -134,6 +130,9 @@ internal class UIBuildReport(private val project: Project) {
                                     text(
                                         error.replace("<", "&lt;").replace("\n", "<br>")
                                     )
+                                    button("Send to ChatGPT") {
+                                        sendToChatGPTAction(error)
+                                    }
                                 }
                             }
                         }
@@ -159,5 +158,16 @@ internal class UIBuildReport(private val project: Project) {
         viewport.extentSize = Dimension(0, 0)
 
         return scrollPane
+    }
+
+
+    private fun sendToChatGPTAction(error : String) {
+        val uiGPT = UIGpt.getInstance(project)
+        uiGPT.addToPrompt(error)
+
+        val settingsState = SettingsState.getInstance()
+        if (settingsState.autoSendPrompt) {
+            uiGPT.sendPrompt()
+        }
     }
 }
