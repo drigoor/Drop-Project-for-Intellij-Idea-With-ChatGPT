@@ -29,6 +29,7 @@ class GptInteraction(var project: Project) {
     private var responseLog = ArrayList<GPTResponse>()
     private var chatLog = ArrayList<Message>()
     private var chatToSave = ArrayList<LogMessage>()
+    var fromDPReport = true
     private var messages = mutableListOf(
         Message("system", "You are a helpful assistant"),
     )

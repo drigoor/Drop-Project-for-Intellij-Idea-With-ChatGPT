@@ -26,7 +26,7 @@ class SendToGptEditor : AnAction() {
             //println(selectedText)
 
             val uiGPT = UIGpt.getInstance(e.project!!)
-            uiGPT.addToPrompt(selectedText, "gpt-4") // só vai funcionar com gpt-4 se a opção "Send prompt automatically" is active
+            uiGPT.addToPrompt(selectedText, "gpt-3.5-turbo")
 
             val settingsState = SettingsState.getInstance()
             if (settingsState.autoSendPrompt) {
@@ -52,7 +52,7 @@ class SendToGptConsole : AnAction() {
             //println(selectedText)
 
             val uiGPT = UIGpt.getInstance(e.project!!)
-            uiGPT.addToPrompt(selectedText, "gpt-4") // só vai funcionar com gpt-4 se a opção "Send prompt automatically" is active
+            uiGPT.addToPrompt(selectedText, "gpt-3.5-turbo")
 
             val settingsState = SettingsState.getInstance()
             if (settingsState.autoSendPrompt) {

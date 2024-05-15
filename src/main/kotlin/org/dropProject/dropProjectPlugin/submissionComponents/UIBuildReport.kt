@@ -163,7 +163,7 @@ internal class UIBuildReport(private val project: Project) {
 
     private fun sendToChatGPTAction(error : String) {
         val uiGPT = UIGpt.getInstance(project)
-        uiGPT.addToPrompt(error)
+        uiGPT.addToPrompt(error, "gpt-4o", true)
 
         val settingsState = SettingsState.getInstance()
         if (settingsState.autoSendPrompt) {
