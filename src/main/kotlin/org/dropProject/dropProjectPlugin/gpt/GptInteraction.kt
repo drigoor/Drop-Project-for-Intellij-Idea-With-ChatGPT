@@ -240,6 +240,10 @@ class GptInteraction(var project: Project) {
     fun getLastBlockOfCode(): String? {
         val codeBlockDelimiter = "```"
 
+        if(chatToSave.isEmpty()) {
+            return null
+        }
+
         if (!chatToSave.last().isFromGPT()) {
             return null
         }
@@ -248,15 +252,19 @@ class GptInteraction(var project: Project) {
             var messageContent = chatToSave.last().getContent()
 
             var startIndex = messageContent.indexOf(codeBlockDelimiter)
-            messageContent = messageContent.substring(startIndex, messageContent.length)
 
-            startIndex = messageContent.indexOf("\n")
-            messageContent = messageContent.substring(startIndex, messageContent.length)
+            if(startIndex >= 0) {
+                messageContent = messageContent.substring(startIndex, messageContent.length)
 
-            val endIndex = messageContent.lastIndexOf(codeBlockDelimiter)
+                startIndex = messageContent.indexOf("\n")
+                messageContent = messageContent.substring(startIndex, messageContent.length)
 
-            return messageContent.substring(0, endIndex)
+                val endIndex = messageContent.lastIndexOf(codeBlockDelimiter)
 
+                return messageContent.substring(0, endIndex)
+            }
+
+            return ""
         } catch (e: Exception) {
             println("IDK some error")
             return null
