@@ -5,7 +5,8 @@ class LogMessage(
     private val content: String,
     private val localDateTime: java.time.LocalDateTime,
     private var model: String?,
-    private var useful: Boolean?
+    private var useful: Boolean?,
+    private var customSystemPrompt: Boolean?
 ) {
     override fun toString(): String {
         if (isFromGPT()) {
@@ -15,7 +16,7 @@ class LogMessage(
             DateTime: $localDateTime
             Model: $model
             Useful: $useful
-            
+            CustomSystemPrompt: $customSystemPrompt
             """.trimIndent()
         }
 
