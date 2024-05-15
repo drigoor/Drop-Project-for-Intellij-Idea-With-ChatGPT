@@ -63,7 +63,7 @@ class GptInteraction(var project: Project) {
     }
 
     private fun processPrompt(): String {
-        if (model != "gpt-4" && !hasEnoughPlafond()) {
+        if (model != "gpt-4o" && !hasEnoughPlafond()) {
                 return "Error: Not enough plafond"
         }
 
