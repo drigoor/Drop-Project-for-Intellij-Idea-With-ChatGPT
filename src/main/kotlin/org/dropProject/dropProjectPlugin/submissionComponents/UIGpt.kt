@@ -138,6 +138,9 @@ class UIGpt(var project: Project) {
     private var askTwice = false
 
     init {
+
+        disableUsefulnessButtons()
+
         textField.emptyText.text = "Send a message"
         textField.preferredSize = Dimension(400, 30)  // Set a preferred size for the textField
 
@@ -177,10 +180,13 @@ class UIGpt(var project: Project) {
         usefulButton.addActionListener {
             gptInteraction.markLastResponseAs(true)
 
+            disableUsefulnessButtons()
         }
 
         notUsefulButton.addActionListener {
             gptInteraction.markLastResponseAs(false)
+
+            disableUsefulnessButtons()
         }
 
         copyCodeButton.addActionListener {
@@ -334,10 +340,22 @@ class UIGpt(var project: Project) {
         textField.text += text
     }
 
+    fun disableUsefulnessButtons() {
+        usefulButton.isEnabled = false
+        notUsefulButton.isEnabled = false
+    }
+
+    fun enableUsefulnessButtons() {
+        usefulButton.isEnabled = true
+        notUsefulButton.isEnabled = true
+    }
+
     fun sendPrompt() {
         val scope = CoroutineScope(Dispatchers.Default)
 
         if (textField.text != null && textField.text != "") {
+            disableUsefulnessButtons()
+
             sendButton.isEnabled = false
 
             val selectedPhrase = phraseComboBox.selectedItem as String
@@ -380,6 +398,10 @@ class UIGpt(var project: Project) {
             }
         }
 
+        if (gptInteraction.fromDPReport) {
+            enableUsefulnessButtons()
+        }
+
         gptInteraction.fromDPReport = false
     }
 
@@ -395,7 +417,7 @@ class UIGpt(var project: Project) {
 
     private fun updateChatScreen() {
         responseArea.text = chatHtml.getHtmlChat()
-        println(chatHtml.getHtmlChat())
+        //println(chatHtml.getHtmlChat())
     }
 
     fun updatePhrases() {

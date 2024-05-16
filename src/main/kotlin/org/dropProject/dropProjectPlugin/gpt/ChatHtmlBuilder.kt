@@ -49,7 +49,7 @@ class ChatHtmlBuilder {
 
     private var content = StringBuilder("<table>")
     fun getHtmlChat(): String {
-        println("$content</table>\n")
+//        println("$content</table>\n")
         return "$content</table>\n"
     }
     fun append(user: String, message: String, isUser: Boolean) {

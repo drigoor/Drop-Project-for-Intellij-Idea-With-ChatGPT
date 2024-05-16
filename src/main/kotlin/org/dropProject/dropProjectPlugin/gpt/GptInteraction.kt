@@ -266,7 +266,7 @@ class GptInteraction(var project: Project) {
 
         for (message in chatToSave) {
             logFile.appendText(message.toString() + "\n")
-            println("ALL YOUR JSON: " + message.writeToJSON())
+            //println("ALL YOUR JSON: " + message.writeToJSON())
             logFileJSON.appendText(message.writeToJSON())
         }
     }
