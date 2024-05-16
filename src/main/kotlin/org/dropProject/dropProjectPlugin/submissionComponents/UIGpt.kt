@@ -398,7 +398,7 @@ class UIGpt(var project: Project) {
             }
         }
 
-        if (gptInteraction.fromDPReport) {
+        if (gptInteraction.fromDPReport && !gptInteraction.gptResponseError) {
             enableUsefulnessButtons()
         }
 

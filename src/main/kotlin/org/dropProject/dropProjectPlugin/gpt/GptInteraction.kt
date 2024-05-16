@@ -20,6 +20,7 @@ import kotlin.random.Random
 
 class GptInteraction(var project: Project) {
     var model = ""
+    var gptResponseError = false
 
     private val separator = FileSystems.getDefault().separator
     //private val logFileDirectory = "${System.getProperty("user.home")}${separator}Documents${separator}Drop Project Plugin${separator}"
@@ -27,7 +28,7 @@ class GptInteraction(var project: Project) {
     private val dateTime = Date()
     private val formatter = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
 
-    private val logFile = File("${logFileDirectory}${separator}chat_logs${separator}chat_log_${formatter.format(dateTime)}.txt")
+//    private val logFile = File("${logFileDirectory}${separator}chat_logs${separator}chat_log_${formatter.format(dateTime)}.txt")
     private val logFileJSON = File("${logFileDirectory}${separator}chat_logs${separator}chat_log_${formatter.format(dateTime)}.json")
 
     private var responseLog = ArrayList<GPTResponse>()
@@ -46,7 +47,7 @@ class GptInteraction(var project: Project) {
     private var messages = ArrayList<Message>()
 
     init {
-        prepareLogFile(logFile)
+//        prepareLogFile(logFile)
         prepareLogFile(logFileJSON)
     }
 
@@ -128,7 +129,11 @@ class GptInteraction(var project: Project) {
     }
 
     private fun processPrompt(): String {
+        gptResponseError = false
+
         if (!fromDPReport && !Plafond.hasEnoughPlafond(65)) {
+            gptResponseError = true
+
             return "Error: Not enough plafond"
         }
 
@@ -137,6 +142,9 @@ class GptInteraction(var project: Project) {
 
         if (apiKey == "") {
             DefaultNotification.notify(project, "No API key set")
+
+            gptResponseError = true
+
             return "Error: No API key set"
         }
 
@@ -190,7 +198,11 @@ class GptInteraction(var project: Project) {
 
                 DefaultNotification.notify(project, "Response unsuccseessful, no tokens")
 
-                logMessageGpt(myResponse.error.message)
+                if (fromDPReport) {
+                    logMessageGpt(myResponse.error.message)
+                }
+
+                gptResponseError = true
 
                 return "Error code: {${myResponse.error.code}}"
             }
@@ -207,12 +219,16 @@ class GptInteraction(var project: Project) {
 
             responseLog.add(myResponse)
 
-            logMessageGpt(myResponse.choices.first().message.content)
+            if (fromDPReport) {
+                logMessageGpt(myResponse.choices.first().message.content)
+            }
 
             return myResponse.choices.first().message.content
 
         } catch (exception : Exception) {
             //mostrar uma notificação a dizer que o chatgpt não respondeu
+            gptResponseError = true
+
             return "Erro desconhecido"
         }
     }
@@ -258,14 +274,14 @@ class GptInteraction(var project: Project) {
     }
 
     private fun updateLogFile() {
-        logFile.delete()
-        logFile.createNewFile()
+//        logFile.delete()
+//        logFile.createNewFile()
 
         logFileJSON.delete()
         logFileJSON.createNewFile()
 
         for (message in chatToSave) {
-            logFile.appendText(message.toString() + "\n")
+//            logFile.appendText(message.toString() + "\n")
             //println("ALL YOUR JSON: " + message.writeToJSON())
             logFileJSON.appendText(message.writeToJSON())
         }
