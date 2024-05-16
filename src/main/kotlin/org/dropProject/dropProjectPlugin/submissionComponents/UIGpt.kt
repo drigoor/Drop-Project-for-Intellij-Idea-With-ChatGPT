@@ -338,6 +338,10 @@ class UIGpt(var project: Project) {
         gptInteraction.model = model
         gptInteraction.fromDPReport = fromDPReport
         textField.text += text
+
+        if(fromDPReport) {
+            gptInteraction.restartLog()
+        }
     }
 
     fun disableUsefulnessButtons() {

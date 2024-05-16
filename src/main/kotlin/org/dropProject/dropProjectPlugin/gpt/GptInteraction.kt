@@ -48,6 +48,15 @@ class GptInteraction(var project: Project) {
 
     init {
 //        prepareLogFile(logFile)
+
+        // Only Log when executing from the DP Report
+        //prepareLogFile(logFileJSON)
+    }
+
+    fun restartLog() {
+        println("restart Log")
+        val dateTime_new = Date()
+        logFileJSON = File("${logFileDirectory}${separator}chat_logs${separator}chat_log_${formatter.format(dateTime_new)}.json")
         prepareLogFile(logFileJSON)
     }
 
