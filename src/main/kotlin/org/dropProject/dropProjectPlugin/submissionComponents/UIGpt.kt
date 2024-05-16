@@ -141,7 +141,8 @@ class UIGpt(var project: Project) {
 
         disableUsefulnessButtons()
 
-        textField.emptyText.text = "Send a message"
+        //textField.emptyText.text = "Send a message"
+        textField.emptyText.text = "Write your message here..."
         textField.preferredSize = Dimension(400, 30)  // Set a preferred size for the textField
 
 
