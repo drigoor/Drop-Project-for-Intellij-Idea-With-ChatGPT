@@ -204,6 +204,7 @@ class UIGpt(var project: Project) {
         sendButton.addMouseListener(object : MouseAdapter() {
             override fun mousePressed(e: MouseEvent?) {
                 gptInteraction.model = gpt3_5Model
+                gptInteraction.fromDPReport = false
                 sendPrompt()
             }
         })
