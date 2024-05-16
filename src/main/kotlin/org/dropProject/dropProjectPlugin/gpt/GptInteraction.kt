@@ -84,7 +84,11 @@ class GptInteraction(var project: Project) {
     }
     */
 
-    fun useCustomSystemPropmt(): Boolean {
+    fun useCustomSystemPrompt(): Boolean {
+        if (!Plafond.hasEnoughPlafond(45)) {
+            return false
+        }
+
         val probability = 0.5f
         val dice = Random.nextFloat()
 
@@ -101,7 +105,7 @@ class GptInteraction(var project: Project) {
             return default
         }
 
-        if (useCustomSystemPropmt()) {
+        if (useCustomSystemPrompt()) {
             customSystemPrompt = true
             return customSystemPrompt()
         }
@@ -124,7 +128,7 @@ class GptInteraction(var project: Project) {
     }
 
     private fun processPrompt(): String {
-        if (!fromDPReport && !Plafond.hasEnoughPlafond()) {
+        if (!fromDPReport && !Plafond.hasEnoughPlafond(65)) {
             return "Error: Not enough plafond"
         }
 

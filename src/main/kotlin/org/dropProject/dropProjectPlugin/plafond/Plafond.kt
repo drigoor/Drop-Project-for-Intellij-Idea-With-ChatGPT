@@ -13,7 +13,7 @@ object Plafond {
     private val plafondDataJsonAdapter = moshi.adapter(PlafondData::class.java)
 
 
-    fun isBellow70(url: String): Boolean {
+    fun isBellowN(url: String, threshold: Int): Boolean {
         val request = Request.Builder()
             .url(url)
             .build()
@@ -25,13 +25,13 @@ object Plafond {
             val plafondData = plafondDataJsonAdapter.fromJson(body ?: "")
             val value = plafondData?.availableTokens ?: 0
 
-            return value < 70
+            return value < threshold
         }
     }
 
 
-    fun hasEnoughPlafond(): Boolean {
-        return !isBellow70("https://raw.githubusercontent.com/drigoor/Drop-Project-for-Intellij-Idea-With-ChatGPT/master/plafond.json")
+    fun hasEnoughPlafond(threshold: Int): Boolean {
+        return !isBellowN("https://raw.githubusercontent.com/drigoor/Drop-Project-for-Intellij-Idea-With-ChatGPT/master/plafond.json", threshold)
     }
 
 }
