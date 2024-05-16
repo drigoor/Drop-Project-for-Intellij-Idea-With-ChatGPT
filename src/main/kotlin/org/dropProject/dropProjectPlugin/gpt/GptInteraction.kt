@@ -194,8 +194,6 @@ class GptInteraction(var project: Project) {
         logFile.createNewFile()
         for (message in chatToSave) {
             logFile.appendText(message.toString() + "\n")
-
-            println("ALL YOUR JSON: " + message.writeToJSON())
         }
     }
 
@@ -264,7 +262,7 @@ class GptInteraction(var project: Project) {
                 return messageContent.substring(0, endIndex)
             }
 
-            return ""
+            return null
         } catch (e: Exception) {
             println("IDK some error")
             return null
