@@ -253,7 +253,7 @@ class GptInteraction(var project: Project) {
             println("Couldn't write file")
         }
         */
-        val logMessage = LogMessage("ChatGPT", message.trim(), java.time.LocalDateTime.now(), model, null, customSystemPrompt)
+        val logMessage = LogMessage("ChatGPT", message.trim(), java.time.LocalDateTime.now(), model, null, null)
         chatToSave.add(logMessage)
 
         updateLogFile()
