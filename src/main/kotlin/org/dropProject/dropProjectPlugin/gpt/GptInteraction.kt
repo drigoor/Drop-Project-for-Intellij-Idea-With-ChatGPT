@@ -128,6 +128,11 @@ class GptInteraction(var project: Project) {
         return responseLog.last().choices.first().message.content
     }
 
+
+    private fun getAPIURL(): String {
+        return "https://api.openai.com/v1/chat/completions"
+    }
+
     private fun processPrompt(): String {
         gptResponseError = false
 
@@ -148,8 +153,7 @@ class GptInteraction(var project: Project) {
             return "Error: No API key set"
         }
 
-
-        val apiUrl = "https://api.openai.com/v1/chat/completions"
+        val apiUrl = getAPIURL()
 
         // TODO BC rever
         messages.add(Message("system", calcSystemPrompt()))
