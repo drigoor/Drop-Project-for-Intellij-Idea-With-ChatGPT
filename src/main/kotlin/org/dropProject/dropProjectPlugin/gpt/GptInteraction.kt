@@ -157,6 +157,7 @@ class GptInteraction(var project: Project) {
         val apiUrl = getAPIURL()
 
         // TODO BC rever
+        // Isto está a "duplicar" a system prompt
         messages.add(Message("system", calcSystemPrompt()))
 
         val messagesJson = messages.joinToString(",") {
