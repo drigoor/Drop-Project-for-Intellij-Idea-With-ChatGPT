@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+import kotlin.random.Random
 
 class GptInteraction(var project: Project) {
     var model = ""
@@ -29,10 +30,18 @@ class GptInteraction(var project: Project) {
     private var responseLog = ArrayList<GPTResponse>()
     private var chatLog = ArrayList<Message>()
     private var chatToSave = ArrayList<LogMessage>()
-    var fromDPReport = true
+
+    // indicates if the Chat was open from the "Send to ChatGPT" button available in the DP Submission Report
+    var fromDPReport = false
+    var customSystemPrompt = false
+
+    /*
     private var messages = mutableListOf(
         Message("system", "You are a helpful assistant"),
     )
+    */
+    //private var messages = listOf<Message>
+    private var messages = ArrayList<Message>()
 
     init {
         val logFileParent = logFile.parentFile
@@ -42,6 +51,28 @@ class GptInteraction(var project: Project) {
         if (!logFile.exists()) {
             logFile.createNewFile() // Creating the target file if it doesn't exist
         }
+    }
+
+    private fun customSystemPrompt(): String {
+        val frase0 = "És um professor de informática. "
+        val frase1 = "Estás-me a ajudar a resolver problemas com o meu código do projecto de Algoritmia e Estruturas de Dados. "
+        val frase2 = "Os problemas foram identificados por um Automated Assessment Tool. "
+        val frase3 = "Dá-me dicas para os resolver."
+        return frase0 + frase1 + frase2 + frase3
+    }
+
+    fun calcSystemPrompt(): String {
+        val default = "You are a helpful assistant"
+        customSystemPrompt = false
+        if(!fromDPReport) {
+            return default
+        }
+        val rnd = Random.nextBoolean()
+        if(rnd) {
+            customSystemPrompt = true
+            return customSystemPrompt()
+        }
+        return default
     }
 
     fun executePrompt(prompt: String): String {
@@ -78,6 +109,8 @@ class GptInteraction(var project: Project) {
 
         val apiUrl = "https://api.openai.com/v1/chat/completions"
 
+        messages.add(Message("system", calcSystemPrompt()))
+
         val messagesJson = messages.joinToString(",") {
             """
             {
@@ -94,6 +127,11 @@ class GptInteraction(var project: Project) {
                 "messages": [$messagesJson]
             }
             """.trimIndent()
+
+        // BC
+        // DUVIDA
+        // A lista de messages não devia ser LIMPA algures por aqui, para não ir acumulando?
+        //
 
         val client = OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
@@ -163,7 +201,7 @@ class GptInteraction(var project: Project) {
             println("Couldn't write file")
         }
         */
-        val logMessage = LogMessage("ChatGPT", message.trim(), java.time.LocalDateTime.now(), model, null)
+        val logMessage = LogMessage("ChatGPT", message.trim(), java.time.LocalDateTime.now(), model, null, customSystemPrompt)
         chatToSave.add(logMessage)
 
         updateLogFile()
@@ -183,7 +221,7 @@ class GptInteraction(var project: Project) {
         }
         */
 
-        val logMessage = LogMessage("user", prompt.trim(), java.time.LocalDateTime.now(), null, null)
+        val logMessage = LogMessage("user", prompt.trim(), java.time.LocalDateTime.now(), null, null, customSystemPrompt)
         chatToSave.add(logMessage)
 
         updateLogFile()
