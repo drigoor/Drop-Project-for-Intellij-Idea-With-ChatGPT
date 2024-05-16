@@ -253,6 +253,7 @@ class UIGpt(var project: Project) {
         gbc.weightx = 0.5
         gbc.fill = GridBagConstraints.BOTH
         inputAndSubmitPanel.add(phraseComboBox, gbc)
+        phraseComboBox.toolTipText = "The selected text will be suffixed to your prompt..."
 
         gbc.gridx = 1
         gbc.gridy = 3
