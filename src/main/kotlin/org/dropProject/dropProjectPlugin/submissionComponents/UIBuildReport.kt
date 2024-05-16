@@ -5,6 +5,7 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.dsl.builder.RowLayout
 import com.intellij.ui.dsl.builder.panel
 import data.FullBuildReport
+import org.dropProject.dropProjectPlugin.DefaultNotification
 import org.dropProject.dropProjectPlugin.gpt4Model
 import org.dropProject.dropProjectPlugin.settings.SettingsState
 import java.awt.Dimension
@@ -77,6 +78,8 @@ internal class UIBuildReport(private val project: Project) {
                         group("Error $index") {
                             row {
                                 text(error)
+                            }
+                            row {
                                 button("Send to ChatGPT") {
                                     sendToChatGPTAction(error)
                                 }
@@ -97,6 +100,8 @@ internal class UIBuildReport(private val project: Project) {
                             group {
                                 row {
                                     text(error)
+                                }
+                                row {
                                     button("Send to ChatGPT") {
                                         sendToChatGPTAction(error)
                                     }
@@ -113,6 +118,8 @@ internal class UIBuildReport(private val project: Project) {
                         group {
                             row {
                                 text(error)
+                            }
+                            row {
                                 button("Send to ChatGPT") {
                                     sendToChatGPTAction(error)
                                 }
@@ -131,6 +138,8 @@ internal class UIBuildReport(private val project: Project) {
                                     text(
                                         error.replace("<", "&lt;").replace("\n", "<br>")
                                     )
+                                }
+                                row {
                                     button("Send to ChatGPT") {
                                         sendToChatGPTAction(error)
                                     }
@@ -165,6 +174,9 @@ internal class UIBuildReport(private val project: Project) {
     private fun sendToChatGPTAction(error : String) {
         val uiGPT = UIGpt.getInstance(project)
         uiGPT.addToPrompt(error, gpt4Model, true)
+
+        val message = "The error has been sent to GPT. Check the ChatGPT tab for more information."
+        DefaultNotification.notify(project, message)
 
         val settingsState = SettingsState.getInstance()
         if (settingsState.autoSendPrompt) {
