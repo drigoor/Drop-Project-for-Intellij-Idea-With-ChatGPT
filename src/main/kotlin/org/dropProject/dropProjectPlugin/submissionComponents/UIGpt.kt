@@ -402,7 +402,7 @@ class UIGpt(var project: Project) {
             enableUsefulnessButtons()
         }
 
-        gptInteraction.fromDPReport = false
+        //gptInteraction.fromDPReport = false
     }
 
     private fun openDiffViewer(response1: String, response2: String) {
