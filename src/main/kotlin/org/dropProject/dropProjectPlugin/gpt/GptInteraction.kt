@@ -68,6 +68,7 @@ class GptInteraction(var project: Project) {
         return frase0 + frase1 + frase2 + frase3
     }
 
+    /*
     fun calcSystemPrompt(): String {
         val default = "You are a helpful assistant"
         customSystemPrompt = false
@@ -79,6 +80,32 @@ class GptInteraction(var project: Project) {
             customSystemPrompt = true
             return customSystemPrompt()
         }
+        return default
+    }
+    */
+
+    fun useCustomSystemPropmt(): Boolean {
+        val probability = 0.5f
+        val dice = Random.nextFloat()
+
+        return dice < probability;
+    }
+
+
+    fun calcSystemPrompt(): String {
+        customSystemPrompt = false
+
+        val default = "You are a helpful assistant"
+
+        if (!fromDPReport) {
+            return default
+        }
+
+        if (useCustomSystemPropmt()) {
+            customSystemPrompt = true
+            return customSystemPrompt()
+        }
+
         return default
     }
 
