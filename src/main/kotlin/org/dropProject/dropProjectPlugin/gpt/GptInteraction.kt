@@ -128,6 +128,11 @@ class GptInteraction(var project: Project) {
         return responseLog.last().choices.first().message.content
     }
 
+    private fun getAPIKey(): String {
+        val settingsState = SettingsState.getInstance()
+        val apiKey = settingsState.openAiToken
+        return apiKey
+    }
 
     private fun getAPIURL(): String {
         return "https://api.openai.com/v1/chat/completions"
@@ -138,18 +143,14 @@ class GptInteraction(var project: Project) {
 
         if (!fromDPReport && !Plafond.hasEnoughPlafond(65)) {
             gptResponseError = true
-
             return "Error: Not enough plafond"
         }
 
-        val settingsState = SettingsState.getInstance()
-        val apiKey = settingsState.openAiToken
+        val apiKey = getAPIKey()
 
         if (apiKey == "") {
             DefaultNotification.notify(project, "No API key set")
-
             gptResponseError = true
-
             return "Error: No API key set"
         }
 
