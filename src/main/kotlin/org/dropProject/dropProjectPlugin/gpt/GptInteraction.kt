@@ -43,7 +43,6 @@ class GptInteraction(var project: Project) {
         Message("system", "You are a helpful assistant"),
     )
     */
-    //private var messages = listOf<Message>
     private var messages = ArrayList<Message>()
 
     init {
@@ -117,6 +116,7 @@ class GptInteraction(var project: Project) {
 
         val apiUrl = "https://api.openai.com/v1/chat/completions"
 
+        // TODO BC rever
         messages.add(Message("system", calcSystemPrompt()))
 
         val messagesJson = messages.joinToString(",") {
@@ -135,11 +135,6 @@ class GptInteraction(var project: Project) {
                 "messages": [$messagesJson]
             }
             """.trimIndent()
-
-        // BC
-        // DUVIDA
-        // A lista de messages não devia ser LIMPA algures por aqui, para não ir acumulando?
-        //
 
         val client = OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
