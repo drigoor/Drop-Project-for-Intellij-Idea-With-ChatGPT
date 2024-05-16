@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.dropProject.dropProjectPlugin.gpt.ChatHtmlBuilder
 import org.dropProject.dropProjectPlugin.gpt.GptInteraction
+import org.dropProject.dropProjectPlugin.gpt3_5Model
 import org.dropProject.dropProjectPlugin.settings.SettingsState
 import java.awt.*
 import java.awt.datatransfer.StringSelection
@@ -196,7 +197,7 @@ class UIGpt(var project: Project) {
         sendButton = JButton("Send Message")
         sendButton.addMouseListener(object : MouseAdapter() {
             override fun mousePressed(e: MouseEvent?) {
-                gptInteraction.model = "gpt-3.5-turbo"
+                gptInteraction.model = gpt3_5Model
                 sendPrompt()
             }
         })
@@ -327,7 +328,7 @@ class UIGpt(var project: Project) {
         return input.replace("[\\\\$\"\\n\\r\\t\b\\u000c']".toRegex(), "")
     }
 
-    fun addToPrompt(text: String, model: String = "gpt-3.5-turbo", fromDPReport: Boolean = false) {
+    fun addToPrompt(text: String, model: String = gpt3_5Model, fromDPReport: Boolean = false) {
         gptInteraction.model = model
         gptInteraction.fromDPReport = fromDPReport
         textField.text += text

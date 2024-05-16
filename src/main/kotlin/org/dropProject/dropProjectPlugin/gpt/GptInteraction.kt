@@ -96,13 +96,9 @@ class GptInteraction(var project: Project) {
         return responseLog.last().choices.first().message.content
     }
 
-    fun hasEnoughPlafond(): Boolean {
-        return !Plafond.isBellow70("https://raw.githubusercontent.com/drigoor/Drop-Project-for-Intellij-Idea-With-ChatGPT/master/plafond.json")
-    }
-
     private fun processPrompt(): String {
-        if (model != "gpt-4o" && !hasEnoughPlafond()) {
-                return "Error: Not enough plafond"
+        if (!fromDPReport && !Plafond.hasEnoughPlafond()) {
+            return "Error: Not enough plafond"
         }
 
         val settingsState = SettingsState.getInstance()

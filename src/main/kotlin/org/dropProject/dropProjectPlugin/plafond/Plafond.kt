@@ -28,4 +28,10 @@ object Plafond {
             return value < 70
         }
     }
+
+
+    fun hasEnoughPlafond(): Boolean {
+        return !isBellow70("https://raw.githubusercontent.com/drigoor/Drop-Project-for-Intellij-Idea-With-ChatGPT/master/plafond.json")
+    }
+
 }

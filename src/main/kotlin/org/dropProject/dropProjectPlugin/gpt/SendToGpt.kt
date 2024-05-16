@@ -6,6 +6,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.editor.CaretModel
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.ui.Messages
+import org.dropProject.dropProjectPlugin.gpt3_5Model
 import org.dropProject.dropProjectPlugin.settings.SettingsState
 import org.dropProject.dropProjectPlugin.submissionComponents.UIGpt
 import org.jetbrains.annotations.NotNull
@@ -26,7 +27,7 @@ class SendToGptEditor : AnAction() {
             //println(selectedText)
 
             val uiGPT = UIGpt.getInstance(e.project!!)
-            uiGPT.addToPrompt(selectedText, "gpt-3.5-turbo")
+            uiGPT.addToPrompt(selectedText, gpt3_5Model)
 
             val settingsState = SettingsState.getInstance()
             if (settingsState.autoSendPrompt) {
@@ -52,7 +53,7 @@ class SendToGptConsole : AnAction() {
             //println(selectedText)
 
             val uiGPT = UIGpt.getInstance(e.project!!)
-            uiGPT.addToPrompt(selectedText, "gpt-3.5-turbo")
+            uiGPT.addToPrompt(selectedText, gpt3_5Model)
 
             val settingsState = SettingsState.getInstance()
             if (settingsState.autoSendPrompt) {
