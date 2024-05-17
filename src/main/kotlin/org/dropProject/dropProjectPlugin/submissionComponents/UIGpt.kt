@@ -346,7 +346,11 @@ class UIGpt(var project: Project) {
         if(fromDPReport) {
             gptInteraction.chatToSave.clear()
             gptInteraction.messages.clear()
-            gptInteraction.messages.add(Message("system", gptInteraction.calcSystemPrompt()))
+
+            val systemPrompt = gptInteraction.calcSystemPrompt()
+            if (systemPrompt.isNotEmpty()) {
+                gptInteraction.messages.add(Message("system", systemPrompt))
+            }
 
             gptInteraction.restartLog()
         }
