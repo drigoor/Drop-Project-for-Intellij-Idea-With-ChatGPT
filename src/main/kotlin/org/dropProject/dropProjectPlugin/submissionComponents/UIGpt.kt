@@ -387,7 +387,11 @@ class UIGpt(var project: Project) {
                 //Adding the prompt that is being sent
                 gptInteraction.addPromptMessage(escapedMessage)
                 chatHtml.append("User", escapedMessage, true)
-                gptInteraction.logMessageUser(escapedMessage)
+
+                if (gptInteraction.fromDPReport) {
+                    gptInteraction.logMessageUser(escapedMessage)
+                }
+
                 updateChatScreen()
 
                 val response = gptInteraction.executePrompt(escapedMessage)
