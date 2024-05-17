@@ -359,11 +359,15 @@ class UIGpt(var project: Project) {
     fun disableUsefulnessButtons() {
         usefulButton.isEnabled = false
         notUsefulButton.isEnabled = false
+
+        sendButton.isEnabled = true
     }
 
     fun enableUsefulnessButtons() {
         usefulButton.isEnabled = true
         notUsefulButton.isEnabled = true
+
+        sendButton.isEnabled = false
     }
 
     fun sendPrompt() {
@@ -372,7 +376,7 @@ class UIGpt(var project: Project) {
         if (textField.text != null && textField.text != "") {
             disableUsefulnessButtons()
 
-            sendButton.isEnabled = false
+            sendButton.isEnabled = false // block until the response arrives
 
             val selectedPhrase = phraseComboBox.selectedItem as String
             val message = "${textField.text} $selectedPhrase"
@@ -411,8 +415,10 @@ class UIGpt(var project: Project) {
                     }
                 }
 
-                SwingUtilities.invokeLater {
-                    sendButton.isEnabled = true
+                if (!gptInteraction.fromDPReport) {
+                    SwingUtilities.invokeLater {
+                        sendButton.isEnabled = true // enable after a response arrives
+                    }
                 }
 
             }
