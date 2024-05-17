@@ -10,6 +10,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.dropProject.dropProjectPlugin.DefaultNotification
 import org.dropProject.dropProjectPlugin.plafond.Plafond
 import org.dropProject.dropProjectPlugin.settings.SettingsState
+import org.dropProject.dropProjectPlugin.submissionComponents.UIGpt
 import java.io.File
 import java.nio.file.FileSystems
 import java.text.SimpleDateFormat
@@ -29,11 +30,11 @@ class GptInteraction(var project: Project) {
     private val formatter = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
 
 //    private val logFile = File("${logFileDirectory}${separator}chat_logs${separator}chat_log_${formatter.format(dateTime)}.txt")
-    private val logFileJSON = File("${logFileDirectory}${separator}chat_logs${separator}chat_log_${formatter.format(dateTime)}.json")
+    private var logFileJSON = File("${logFileDirectory}${separator}chat_logs${separator}chat_log_${formatter.format(dateTime)}.json")
 
     private var responseLog = ArrayList<GPTResponse>()
     private var chatLog = ArrayList<Message>()
-    private var chatToSave = ArrayList<LogMessage>()
+    var chatToSave = ArrayList<LogMessage>()
 
     // indicates if the Chat was open from the "Send to ChatGPT" button available in the DP Submission Report
     var fromDPReport = false
@@ -44,7 +45,7 @@ class GptInteraction(var project: Project) {
         Message("system", "You are a helpful assistant"),
     )
     */
-    private var messages = ArrayList<Message>()
+    val messages = ArrayList<Message>()
 
     init {
 //        prepareLogFile(logFile)
@@ -109,7 +110,7 @@ class GptInteraction(var project: Project) {
     fun calcSystemPrompt(): String {
         customSystemPrompt = false
 
-        val default = "You are a helpful assistant"
+        val default = "" // "You are a helpful assistant"
 
         if (!fromDPReport) {
             return default
@@ -150,6 +151,7 @@ class GptInteraction(var project: Project) {
     private fun processPrompt(): String {
         gptResponseError = false
 
+
         if (!fromDPReport && !Plafond.hasEnoughPlafond(65)) {
             gptResponseError = true
             return "Error: Not enough plafond"
@@ -164,10 +166,6 @@ class GptInteraction(var project: Project) {
         }
 
         val apiUrl = getAPIURL()
-
-        // TODO BC rever
-        // Isto está a "duplicar" a system prompt
-        messages.add(Message("system", calcSystemPrompt()))
 
         val messagesJson = messages.joinToString(",") {
             """
@@ -236,6 +234,10 @@ class GptInteraction(var project: Project) {
 
             if (fromDPReport) {
                 logMessageGpt(myResponse.choices.first().message.content)
+            }
+
+            if (fromDPReport && !gptResponseError) {
+                UIGpt.getInstance(project).enableUsefulnessButtons()
             }
 
             return myResponse.choices.first().message.content

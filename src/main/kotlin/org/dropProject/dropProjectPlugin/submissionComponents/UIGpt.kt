@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.dropProject.dropProjectPlugin.gpt.ChatHtmlBuilder
 import org.dropProject.dropProjectPlugin.gpt.GptInteraction
+import org.dropProject.dropProjectPlugin.gpt.Message
 import org.dropProject.dropProjectPlugin.gpt3_5Model
 import org.dropProject.dropProjectPlugin.settings.SettingsState
 import java.awt.*
@@ -343,6 +344,10 @@ class UIGpt(var project: Project) {
         textField.text += text
 
         if(fromDPReport) {
+            gptInteraction.chatToSave.clear()
+            gptInteraction.messages.clear()
+            gptInteraction.messages.add(Message("system", gptInteraction.calcSystemPrompt()))
+
             gptInteraction.restartLog()
         }
     }
@@ -405,9 +410,9 @@ class UIGpt(var project: Project) {
             }
         }
 
-        if (gptInteraction.fromDPReport && !gptInteraction.gptResponseError) {
-            enableUsefulnessButtons()
-        }
+//        if (gptInteraction.fromDPReport && !gptInteraction.gptResponseError) {
+//            enableUsefulnessButtons()
+//        }
 
         //gptInteraction.fromDPReport = false
     }
