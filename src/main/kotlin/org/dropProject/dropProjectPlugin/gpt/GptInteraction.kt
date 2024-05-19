@@ -414,4 +414,8 @@ class GptInteraction(var project: Project) {
         }
         updateLogFile()
     }
+
+    fun reset() {
+
+    }
 }

@@ -6,6 +6,7 @@ import com.intellij.diff.requests.SimpleDiffRequest
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.project.Project
 import com.intellij.ui.JBColor
+import com.intellij.ui.components.CheckBox
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.HTMLEditorKitBuilder
@@ -128,7 +129,9 @@ class UIGpt(var project: Project) {
     private var textField = JBTextField()
     private var phrases = ArrayList<String>()
     private var sendButton = JButton()
-    private var phraseComboBox = JComboBox(phrases.toTypedArray())
+    //private var phraseComboBox = JComboBox(phrases.toTypedArray())
+    private var phraseComboBox = JComboBox(phrases.toArray())
+    private var phraseComboPanel = JPanel()
     private val responseArea = JEditorPane()
     private var inputAndSubmitPanel = JPanel(GridBagLayout())
     private var uI: JBScrollPane = JBScrollPane()
@@ -136,6 +139,8 @@ class UIGpt(var project: Project) {
     private var usefulButton = JButton("Useful", AllIcons.Ide.LikeSelected)
     private var notUsefulButton = JButton("Not Useful", AllIcons.Ide.DislikeSelected)
     private var copyCodeButton = JButton("Copy Code")
+    private var resetButton = JButton("Clear Chat", AllIcons.Actions.Refresh)
+    private var askTwiceCheckBox = CheckBox("Ask for 2 Solutions")
     private var askTwice = false
 
     public var dpReportButton: JButton? = null
@@ -148,7 +153,7 @@ class UIGpt(var project: Project) {
 
         //textField.emptyText.text = "Send a message"
         textField.emptyText.text = "Write your message here..."
-        textField.preferredSize = Dimension(400, 30)  // Set a preferred size for the textField
+        //textField.preferredSize = Dimension(400, 30)  // Set a preferred size for the textField
 
 
         responseArea.apply {
@@ -177,9 +182,11 @@ class UIGpt(var project: Project) {
 
         phrases.add(0, "") //Option that doesn't add anything to the prompt
 
-        phraseComboBox = JComboBox(phrases.toTypedArray())
-        phraseComboBox.preferredSize = Dimension(200, 30)
+        //phraseComboBox = JComboBox(phrases.toTypedArray())
+        //phraseComboBox.preferredSize = Dimension(200, 30)
 
+        phraseComboPanel = createComboBoxPanel()
+        //phraseComboBox.preferredSize = Dimension(200, 30)
 
         val scope = CoroutineScope(Dispatchers.Default)
 
@@ -218,13 +225,13 @@ class UIGpt(var project: Project) {
         inputAndSubmitPanel = JPanel(GridBagLayout())
 
 
-        val askTwiceCheckBox = JCheckBox("Ask for 2 solutions")
+        //val askTwiceCheckBox = JCheckBox("Ask for 2 solutions")
 
 
         val gbc = GridBagConstraints()
-        gbc.weightx = 0.0
-        gbc.weighty = 0.0
-        gbc.insets = JBUI.insets(3)
+        //gbc.weightx = 0.0
+        //gbc.weighty = 0.0
+        gbc.insets = JBUI.insets(3) // Uniform padding around components
 
         gbc.gridx = 0
         gbc.gridy = 0
@@ -233,42 +240,65 @@ class UIGpt(var project: Project) {
         gbc.fill = GridBagConstraints.BOTH
         inputAndSubmitPanel.add(copyCodeButton, gbc)
 
+        // Configuration for the second row with two components
+        gbc.gridwidth = 1 // Reset to default gridwidth
+
+        // Useful Button
         gbc.gridx = 0
         gbc.gridy = 1
-        gbc.gridwidth = 1
-        gbc.weightx = 0.5
-        gbc.fill = GridBagConstraints.BOTH
+        //gbc.gridwidth = 1
+        //gbc.weightx = 0.5
+        //gbc.fill = GridBagConstraints.BOTH
+        gbc.weightx = 0.5 // Each button gets half the space
+        gbc.anchor = GridBagConstraints.CENTER // Center the button in its cell
         inputAndSubmitPanel.add(usefulButton, gbc)
 
+        // Not Useful Button
         gbc.gridx = 1
         gbc.gridy = 1
-        gbc.gridwidth = 1
-        gbc.weightx = 0.5
-        gbc.fill = GridBagConstraints.BOTH
+        //gbc.gridwidth = 1
+        //gbc.weightx = 0.5
+        //gbc.fill = GridBagConstraints.BOTH
+        gbc.weightx = 0.5 // Ensuring even split of horizontal space
+        gbc.anchor = GridBagConstraints.CENTER // Center the button in its cell
         inputAndSubmitPanel.add(notUsefulButton, gbc)
 
+        // TextField row
         gbc.gridx = 0
         gbc.gridy = 2
-        gbc.gridwidth = 2
-        gbc.weightx = 1.0
+        //gbc.gridwidth = 2
+        //gbc.weightx = 1.0
+        gbc.gridwidth = 2 // TextField spans two columns
+        gbc.weightx = 1.0 // Takes up remaining space
         gbc.fill = GridBagConstraints.BOTH
         inputAndSubmitPanel.add(textField, gbc)
 
+        // Phrase Combo Panel and CheckBox
+        gbc.gridwidth = 1 // Reset to default gridwidth
+        gbc.weightx = 0.5 // Split the row evenly
+
+        // Phrase Combo Panel
         gbc.gridx = 0
         gbc.gridy = 3
-        gbc.gridwidth = 1
-        gbc.weightx = 0.5
-        gbc.fill = GridBagConstraints.BOTH
-        inputAndSubmitPanel.add(phraseComboBox, gbc)
+        //gbc.gridwidth = 1
+        //gbc.weightx = 0.5
+        //gbc.fill = GridBagConstraints.BOTH
+        //inputAndSubmitPanel.add(phraseComboBox, gbc)
+        gbc.fill = GridBagConstraints.CENTER
+        inputAndSubmitPanel.add(phraseComboPanel, gbc)
+
         phraseComboBox.toolTipText = "The selected text will be suffixed to your prompt..."
 
+        // CheckBox
         gbc.gridx = 1
         gbc.gridy = 3
-        gbc.gridwidth = 1
-        gbc.weightx = 0.5
-        gbc.fill = GridBagConstraints.BOTH
+        //gbc.gridwidth = 1
+        //gbc.weightx = 0.5
+        //gbc.fill = GridBagConstraints.BOTH
+        gbc.fill = GridBagConstraints.CENTER
         inputAndSubmitPanel.add(askTwiceCheckBox, gbc)
 
+        // Send Button spans two columns
         gbc.gridx = 0
         gbc.gridy = 4
         gbc.gridwidth = 2
@@ -277,12 +307,13 @@ class UIGpt(var project: Project) {
         inputAndSubmitPanel.add(sendButton, gbc)
 
 
-
-
         askTwiceCheckBox.addActionListener {
             askTwice = askTwiceCheckBox.isSelected
         }
 
+        resetButton.addActionListener {
+            resetChat()
+        }
 
 
         inputAndSubmitPanel.preferredSize = Dimension(600, 180) // Increased height to accommodate the taller button
@@ -292,6 +323,7 @@ class UIGpt(var project: Project) {
 
         val panel = JPanel()
         panel.layout = BorderLayout()
+        panel.add(resetButton, BorderLayout.NORTH)
         panel.add(responseArea, BorderLayout.CENTER)
         panel.add(inputAndSubmitPanel, BorderLayout.SOUTH)
         panel.size = Dimension(800, -1)
@@ -337,6 +369,30 @@ class UIGpt(var project: Project) {
         return escaped
     }
     */
+
+    private fun createComboBoxPanel(): JPanel {
+        phraseComboBox = JComboBox(phrases.toTypedArray())
+
+        val label = JLabel("Suffix with:")
+
+        // Create a JPanel and set BoxLayout to align items horizontally
+        val panel = JPanel()
+        panel.layout = BoxLayout(panel, BoxLayout.X_AXIS)
+
+        // Add the label and combo box to the panel
+        panel.add(label)
+        panel.add(Box.createHorizontalStrut(5)) // Adds a fixed space between label and combo box
+        panel.add(phraseComboBox)
+
+        // Optional: Adjust spacing and alignment further if needed
+        label.alignmentY = Component.CENTER_ALIGNMENT
+        phraseComboBox.alignmentY = Component.CENTER_ALIGNMENT
+
+        // Ensuring the panel does not stretch vertically more than necessary
+        panel.maximumSize = panel.preferredSize
+
+        return panel
+    }
 
     private fun escapeKotlinSpecialCharacters(input: String): String {
         return input.replace("[\\\\$\"\\n\\r\\t\b\\u000c']".toRegex(), "")
@@ -454,6 +510,10 @@ class UIGpt(var project: Project) {
     private fun updateChatScreen() {
         responseArea.text = chatHtml.getHtmlChat()
         //println(chatHtml.getHtmlChat())
+
+        SwingUtilities.invokeLater {
+            uI.verticalScrollBar.value = uI.verticalScrollBar.maximum
+        }
     }
 
     fun updatePhrases() {
@@ -478,6 +538,12 @@ class UIGpt(var project: Project) {
         phraseComboBox.removeItemAt(selectedIndex)
         phraseComboBox.insertItemAt(editedSentence, selectedIndex)
         phraseComboBox.selectedIndex = selectedIndex
+    }
+
+    private fun resetChat() {
+        chatHtml.reset()
+        gptInteraction.reset()
+        updateChatScreen()
     }
 
     companion object {

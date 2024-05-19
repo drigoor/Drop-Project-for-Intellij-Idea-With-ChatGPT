@@ -8,45 +8,6 @@ import javax.swing.text.html.StyleSheet
 
 
 class ChatHtmlBuilder {
-    private var cssStyle = "<style>\n" +
-            "    * {\n" +
-            "        margin: 0;\n" +
-            "        padding: 0;\n" +
-            "        background-color: #787878;\n" +
-            "        font-family: Consolas, 'Courier New', monospace;\n" +
-            "        font-size: 10px;\n" +
-            "    }\n" +
-            "    table {\n" +
-            "        width: 80%; /* Adjust table width as needed */\n" +
-            "        border-collapse: collapse;\n" +
-            "    }\n" +
-            "p {\n" +
-            "       word-wrap: break-word;\n" +
-            "   }\n" +
-            "    td, th {\n" +
-            "        padding: 8px; /* Add padding for better readability */\n" +
-            "        word-wrap: break-word; /* Wrap long words */\n" +
-            "        max-width: 400px; /* Limit the maximum width */\n" +
-            "        text-align: left;\n" +
-            "        vertical-align: top;\n" +
-            "        border-bottom: 1px solid #ccc;\n" +
-            "    }\n" +
-            "    .user-column {\n" +
-            "        width: 4%;\n" +
-            "        font-weight: bold;\n" +
-            "        color: rgb(150, 255, 150);\n" +
-            "    }\n" +
-            "    .message-column {\n" +
-            "        width: 96%;\n" +
-            "        color: #ffffff; /* Set text color for contrast */\n" +
-            "        /*background-color: #000000; Set background color */\n" +
-            "    }\n" +
-            "    .chatgpt-column {\n" +
-            "        font-weight: bold;\n" +
-            "        color: rgb(100, 255, 255);\n" +
-            "    }\n" +
-            "</style>"
-
     private var content = StringBuilder("<table>")
     fun getHtmlChat(): String {
 //        println("$content</table>\n")
@@ -83,7 +44,7 @@ class ChatHtmlBuilder {
         word-wrap: break-word;
     }
     table {
-        width: 80%; /* Adjust table width as needed */
+        width: 95%; /* Adjust table width as needed */
         border-collapse: collapse;
     }
     p {
@@ -146,5 +107,9 @@ class ChatHtmlBuilder {
 
         val luminance = 0.299 * red + 0.587 * green + 0.114 * blue
         return luminance < 128
+    }
+
+    fun reset() {
+        content = StringBuilder("<table>")
     }
 }
