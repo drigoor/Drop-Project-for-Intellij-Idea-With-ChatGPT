@@ -100,7 +100,8 @@ class GptInteraction(var project: Project) {
             return false
         }
 
-        val probability = 0.5f
+        // there's 25% probability of using a custom system prompt
+        val probability = 0.25f
         val dice = Random.nextFloat()
 
         return dice < probability;
