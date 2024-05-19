@@ -23,7 +23,7 @@ object Plafond {
 
             val body = response.body?.string()
             val plafondData = plafondDataJsonAdapter.fromJson(body ?: "")
-            val value = plafondData?.availableTokens ?: 0
+            val value = plafondData?.percentage ?: 0
 
             return value < threshold
         }
@@ -31,7 +31,7 @@ object Plafond {
 
 
     fun hasEnoughPlafond(threshold: Int): Boolean {
-        return !isBellowN("https://raw.githubusercontent.com/drigoor/Drop-Project-for-Intellij-Idea-With-ChatGPT/master/plafond.json", threshold)
+        return !isBellowN("https://raw.githubusercontent.com/brunompc/my-repo/master/stuff.json", threshold)
     }
 
 }
