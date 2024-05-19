@@ -105,6 +105,7 @@ class SettingsComponent {
                 .addLabeledComponent(JBLabel("OpenAI API Key: "), openAiTokenPanel, 1, false)
                 .addLabeledComponent(JBLabel("Send to ChatGPT: "), autoSendPrompt, 1, false)
                 .addComponent(createOpenAiAccountButton)
+                .addComponent(createSettingsLine("Prompt Suffix Settings"))
                 .panel.apply {
                     border = BorderFactory.createEmptyBorder(0, 20, 0, 0) // Add left indentation
                 }, BorderLayout.CENTER
@@ -166,7 +167,8 @@ class SettingsComponent {
         gbc.gridy = 2
         panel.add(buttonPanel, gbc)
 
-        panel.border = BorderFactory.createEmptyBorder(0, 20, 0, 0) // Add left indentation
+        //panel.border = BorderFactory.createEmptyBorder(0, 20, 0, 0) // Add left indentation
+        panel.border = BorderFactory.createEmptyBorder(0, 40, 0, 0) // Add left indentation
 
         return panel
     }
