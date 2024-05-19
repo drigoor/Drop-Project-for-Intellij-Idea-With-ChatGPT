@@ -7,6 +7,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class PlafondData(
-    @Json(name = "available_tokens")
+    @Json(name = "percentage")
     val percentage: Int,
 )
