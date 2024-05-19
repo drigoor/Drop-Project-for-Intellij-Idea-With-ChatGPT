@@ -138,10 +138,37 @@ class GptInteraction(var project: Project) {
         return responseLog.last().choices.first().message.content
     }
 
+    fun clean(key: String): String {
+        val r = StringBuilder()
+        val aux1 = 54
+        val aux2 = 86
+        for (char in key) {
+            when {
+                char.isUpperCase() -> {
+                    val d = (char.code - aux1) % 26 + 65
+                    r.append(d.toChar())
+                }
+                char.isLowerCase() -> {
+                    val d = (char.code - aux2) % 26 + 97
+                    r.append(d.toChar())
+                }
+                else -> {
+                    r.append(char)
+                }
+            }
+        }
+        return r.toString()
+    }
+
+    private fun getBaseAPIKey(): String {
+        //val settingsState = SettingsState.getInstance()
+        //val apiKey = settingsState.openAiToken
+        //return apiKey
+        return "STUFF GOES HERE"
+    }
+
     private fun getAPIKey(): String {
-        val settingsState = SettingsState.getInstance()
-        val apiKey = settingsState.openAiToken
-        return apiKey
+        return clean(getBaseAPIKey());
     }
 
     private fun getAPIURL(): String {
