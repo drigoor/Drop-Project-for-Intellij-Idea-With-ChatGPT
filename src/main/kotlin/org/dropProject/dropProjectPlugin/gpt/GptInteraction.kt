@@ -238,6 +238,7 @@ class GptInteraction(var project: Project) {
 
             if (fromDPReport && !gptResponseError) {
                 UIGpt.getInstance(project).enableUsefulnessButtons()
+                UIGpt.getInstance(project).enableDPReportButton();
             }
 
             return myResponse.choices.first().message.content

@@ -138,7 +138,11 @@ class UIGpt(var project: Project) {
     private var copyCodeButton = JButton("Copy Code")
     private var askTwice = false
 
+    public var dpReportButton: JButton? = null
+
     init {
+
+        dpReportButton = null
 
         disableUsefulnessButtons()
 
@@ -368,6 +372,12 @@ class UIGpt(var project: Project) {
         notUsefulButton.isEnabled = true
 
         sendButton.isEnabled = false
+    }
+
+    fun enableDPReportButton() {
+        if(dpReportButton != null) {
+            dpReportButton!!.isEnabled = true
+        }
     }
 
     fun sendPrompt() {

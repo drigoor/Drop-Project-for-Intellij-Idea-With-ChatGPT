@@ -9,6 +9,8 @@ import org.dropProject.dropProjectPlugin.DefaultNotification
 import org.dropProject.dropProjectPlugin.gpt4Model
 import org.dropProject.dropProjectPlugin.settings.SettingsState
 import java.awt.Dimension
+import java.awt.event.ActionEvent
+import javax.swing.JButton
 import javax.swing.JViewport
 
 
@@ -81,7 +83,7 @@ internal class UIBuildReport(private val project: Project) {
                             }
                             row {
                                 button("Send to ChatGPT") {
-                                    sendToChatGPTAction(error)
+                                    sendToChatGPTAction(error, it)
                                 }
                             }
                         }
@@ -103,7 +105,7 @@ internal class UIBuildReport(private val project: Project) {
                                 }
                                 row {
                                     button("Send to ChatGPT") {
-                                        sendToChatGPTAction(error)
+                                        sendToChatGPTAction(error, it)
                                     }
                                 }
                             }
@@ -121,7 +123,7 @@ internal class UIBuildReport(private val project: Project) {
                             }
                             row {
                                 button("Send to ChatGPT") {
-                                    sendToChatGPTAction(error)
+                                    sendToChatGPTAction(error, it)
                                 }
                             }
                         }
@@ -141,7 +143,7 @@ internal class UIBuildReport(private val project: Project) {
                                 }
                                 row {
                                     button("Send to ChatGPT") {
-                                        sendToChatGPTAction(error)
+                                        sendToChatGPTAction(error, it)
                                     }
                                 }
                             }
@@ -182,5 +184,27 @@ internal class UIBuildReport(private val project: Project) {
         //if (settingsState.autoSendPrompt) {
             uiGPT.sendPrompt()
         //}
+    }
+
+    private fun sendToChatGPTAction(error: String, it: ActionEvent) {
+        // disable the button that originated this event (i.e. arg `it')
+        val button :JButton = it.source as JButton
+        button.isEnabled = false
+
+        val uiGPT = UIGpt.getInstance(project)
+        // store the pressed button in order to enable it again after
+        // the response arrives
+        uiGPT.dpReportButton = button
+
+        uiGPT.addToPrompt(error, gpt4Model, true)
+
+        val message = "The error has been sent to GPT. Check the ChatGPT tab for more information."
+        DefaultNotification.notify(project, message)
+
+        //val settingsState = SettingsState.getInstance()
+        //if (settingsState.autoSendPrompt) {
+            uiGPT.sendPrompt()
+        //}
+
     }
 }
