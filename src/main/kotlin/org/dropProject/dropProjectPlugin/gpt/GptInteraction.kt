@@ -162,14 +162,13 @@ class GptInteraction(var project: Project) {
     }
 
     private fun getBaseAPIKey(): String {
-        //val settingsState = SettingsState.getInstance()
-        //val apiKey = settingsState.openAiToken
-        //return apiKey
-        return "STUFF GOES HERE"
+        val settingsState = SettingsState.getInstance()
+        val apiKey = settingsState.openAiToken
+        return apiKey
     }
 
     private fun getAPIKey(): String {
-        return clean(getBaseAPIKey());
+        return getBaseAPIKey()
     }
 
     private fun getAPIURL(): String {
