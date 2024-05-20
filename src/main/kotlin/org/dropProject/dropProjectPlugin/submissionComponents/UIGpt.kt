@@ -287,7 +287,8 @@ class UIGpt(var project: Project) {
         gbc.fill = GridBagConstraints.CENTER
         inputAndSubmitPanel.add(phraseComboPanel, gbc)
 
-        phraseComboBox.toolTipText = "The selected text will be suffixed to your prompt..."
+        val tooltip = "The selected text will be suffixed to your prompt. This list can be configured in the plugin's setttings."
+        phraseComboBox.toolTipText = tooltip
 
         // CheckBox
         gbc.gridx = 1
