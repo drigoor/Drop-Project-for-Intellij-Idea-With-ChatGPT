@@ -74,8 +74,8 @@ class GptInteraction(var project: Project) {
     private fun customSystemPrompt(): String {
         val frase0 = "És um professor de informática. "
         val frase1 = "Estás-me a ajudar a resolver problemas com o meu código do projecto de Algoritmia e Estruturas de Dados. "
-        val frase2 = "Vais-me dar dicas para resolver esses problemas. "
-        val frase3 = "Vais-me dar dicas e sugestões concretas que eu possa aplicar no meu código. "
+        val frase2 = "Vais-me dar dicas e sugestões concretas que eu possa aplicar no meu código para resolver esses problemas. "
+        val frase3 = "Dá-me respostas em Português de Portugal (PT-PT)."
         return frase0 + frase1 + frase2 + frase3
     }
 
@@ -111,7 +111,7 @@ class GptInteraction(var project: Project) {
     fun calcSystemPrompt(): String {
         customSystemPrompt = false
 
-        val default = "" // "You are a helpful assistant"
+        val default = "Dá-me respostas em Português de Portugal (PT-PT)." // "You are a helpful assistant"
 
         if (!fromDPReport) {
             return default
