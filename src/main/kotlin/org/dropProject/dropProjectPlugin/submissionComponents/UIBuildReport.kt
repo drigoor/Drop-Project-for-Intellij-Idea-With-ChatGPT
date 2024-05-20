@@ -6,6 +6,7 @@ import com.intellij.ui.dsl.builder.RowLayout
 import com.intellij.ui.dsl.builder.panel
 import data.FullBuildReport
 import org.dropProject.dropProjectPlugin.DefaultNotification
+import org.dropProject.dropProjectPlugin.gpt3_5Model
 import org.dropProject.dropProjectPlugin.gpt4Model
 import org.dropProject.dropProjectPlugin.settings.SettingsState
 import java.awt.Dimension
@@ -201,6 +202,9 @@ internal class UIBuildReport(private val project: Project) {
         uiGPT.askTwice = false
 
         uiGPT.addToPrompt(error, gpt4Model, true)
+
+        uiGPT.phraseComboBox.selectedIndex = -1
+        uiGPT.phraseComboBox.selectedItem = null
 
         val message = "The error has been sent to GPT. Check the ChatGPT tab for more information."
         DefaultNotification.notify(project, message)

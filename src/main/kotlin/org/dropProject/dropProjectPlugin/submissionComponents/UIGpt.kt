@@ -130,7 +130,7 @@ class UIGpt(var project: Project) {
     private var phrases = ArrayList<String>()
     private var sendButton = JButton()
     //private var phraseComboBox = JComboBox(phrases.toTypedArray())
-    private var phraseComboBox = JComboBox(phrases.toArray())
+    var phraseComboBox = JComboBox(phrases.toArray())
     private var phraseComboPanel = JPanel()
     private val responseArea = JEditorPane()
     private var inputAndSubmitPanel = JPanel(GridBagLayout())
@@ -444,7 +444,11 @@ class UIGpt(var project: Project) {
 
             sendButton.isEnabled = false // block until the response arrives
 
-            val selectedPhrase = phraseComboBox.selectedItem as String
+            var selectedPhrase : String = ""
+            if(phraseComboBox.selectedItem != null) {
+                selectedPhrase = phraseComboBox.selectedItem as String
+            }
+
             val message = "${textField.text} $selectedPhrase"
 
             val escapedMessage = escapeKotlinSpecialCharacters(message)
