@@ -545,7 +545,7 @@ class UIGpt(var project: Project) {
         phraseComboBox.selectedIndex = selectedIndex
     }
 
-    private fun resetChat() {
+    fun resetChat() {
         chatHtml.reset()
         gptInteraction.reset()
         updateChatScreen()

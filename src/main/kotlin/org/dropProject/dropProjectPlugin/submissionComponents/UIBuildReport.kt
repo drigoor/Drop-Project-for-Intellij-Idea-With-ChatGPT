@@ -206,6 +206,7 @@ internal class UIBuildReport(private val project: Project) {
         uiGPT.phraseComboBox.selectedIndex = -1
         uiGPT.phraseComboBox.selectedItem = null
 
+        uiGPT.resetChat()
         val message = "The error has been sent to GPT. Check the ChatGPT tab for more information."
         DefaultNotification.notify(project, message)
 
