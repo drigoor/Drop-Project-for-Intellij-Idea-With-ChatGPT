@@ -325,11 +325,26 @@ class GptInteraction(var project: Project) {
         logFileJSON.delete()
         logFileJSON.createNewFile()
 
+        logFileJSON.appendText("{\n")
+        logFileJSON.appendText("\"value\": [\n")
+
+        var i = 0
+        val nrEntries = chatToSave.size
+
         for (message in chatToSave) {
 //            logFile.appendText(message.toString() + "\n")
             //println("ALL YOUR JSON: " + message.writeToJSON())
-            logFileJSON.appendText(message.writeToJSON())
+            var commaIfNeeded = ""
+            if(i < nrEntries - 1) {
+                commaIfNeeded = ", "
+            }
+            logFileJSON.appendText(message.writeToJSON() + commaIfNeeded + "\n")
+            i++
         }
+
+        logFileJSON.appendText("]\n")
+        logFileJSON.appendText("}\n")
+
     }
 
     fun addPromptMessage(prompt: String) {
