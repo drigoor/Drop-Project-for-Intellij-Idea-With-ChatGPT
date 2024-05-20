@@ -196,6 +196,9 @@ internal class UIBuildReport(private val project: Project) {
         // the response arrives
         uiGPT.dpReportButton = button
 
+        // ignore previously selected options since we don't want them to mess with the experiment
+        uiGPT.askTwiceCheckBox.isSelected = false
+        uiGPT.askTwice = false
         uiGPT.addToPrompt(error, gpt4Model, true)
 
         val message = "The error has been sent to GPT. Check the ChatGPT tab for more information."

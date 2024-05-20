@@ -140,8 +140,8 @@ class UIGpt(var project: Project) {
     private var notUsefulButton = JButton("Not Useful", AllIcons.Ide.DislikeSelected)
     private var copyCodeButton = JButton("Copy Code")
     private var resetButton = JButton("Clear Chat", AllIcons.Actions.Refresh)
-    private var askTwiceCheckBox = CheckBox("Ask for 2 Solutions")
-    private var askTwice = false
+    var askTwiceCheckBox = CheckBox("Ask for 2 Solutions")
+    var askTwice = false
 
     public var dpReportButton: JButton? = null
 
