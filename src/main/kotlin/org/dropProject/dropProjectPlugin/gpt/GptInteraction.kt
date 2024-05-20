@@ -270,7 +270,7 @@ class GptInteraction(var project: Project) {
 
             return myResponse.choices.first().message.content
 
-        } catch (exception : Exception) {
+        } catch (exception: Exception) {
             //mostrar uma notificação a dizer que o chatgpt não respondeu
             gptResponseError = true
 
@@ -357,8 +357,7 @@ class GptInteraction(var project: Project) {
         var log = ""
 
         for (message in chatLog) {
-            if (message.role == "user")
-            {
+            if (message.role == "user") {
                 log += "User: " + message.content + "\n"
             } else {
                 log += "ChatGPT: " + message.content + "\n"
@@ -372,8 +371,7 @@ class GptInteraction(var project: Project) {
         var log = ""
 
         for (message in chatLog) {
-            if (message.role == "user")
-            {
+            if (message.role == "user") {
                 log += "User: " + message.content + "<br><br>"
             } else {
                 log += "ChatGPT: " + message.content + "<br><br>"
@@ -388,7 +386,7 @@ class GptInteraction(var project: Project) {
     fun getLastBlockOfCode(): String? {
         val codeBlockDelimiter = "```"
 
-        if(chatToSave.isEmpty()) {
+        if (chatToSave.isEmpty()) {
             return null
         }
 
@@ -401,7 +399,7 @@ class GptInteraction(var project: Project) {
 
             var startIndex = messageContent.indexOf(codeBlockDelimiter)
 
-            if(startIndex >= 0) {
+            if (startIndex >= 0) {
                 messageContent = messageContent.substring(startIndex, messageContent.length)
 
                 startIndex = messageContent.indexOf("\n")
