@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "org.dropProject"
-version = "0.9.3"
+version = "0.10.0"
 
 repositories {
     mavenCentral()
@@ -32,6 +32,7 @@ dependencies {
     implementation("org.openjfx:javafx-controls:17")
     implementation("org.openjfx:javafx-web:17")
 
+    implementation("com.vladsch.flexmark:flexmark-all:0.64.8") // TODO because of update to v2024.1
 }
 kotlin {
     jvmToolchain(17)
@@ -43,7 +44,7 @@ java {
 
 intellij {
     pluginName = "Drop Project for IntelliJ Idea"
-    version = "2022.3.3"
+    version = "2024.1"
     type = "IC"
 }
 
@@ -62,7 +63,6 @@ tasks {
     }
 
     patchPluginXml {
-        version = "0.9.3"
         sinceBuild.set("223")
         untilBuild.set("241.*")
 

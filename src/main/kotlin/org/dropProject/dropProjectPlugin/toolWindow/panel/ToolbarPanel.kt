@@ -55,7 +55,7 @@ class ToolbarPanel(private var toolWindow: DropProjectToolWindow) : NonOpaquePan
                 val openBuildReportAction = CheckLastReport(toolWindow.globals.lastBuildReport, toolWindow)
                 //GET ID FROM BUILD REPORT ACTION TO PROGRAMMATICALLY DISABLE
                 //not using yet
-                openBuildReportActionID = ActionManager.getInstance().getId(openBuildReportAction)
+                openBuildReportActionID = ActionManager.getInstance().getId(openBuildReportAction).toString() // TODO because of update to v2024.1
                 rightActionGroup.add(openBuildReportAction)
                 rightActionGroup.addSeparator()
             }
